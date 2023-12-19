@@ -30,7 +30,7 @@ class MainWindow(QMainWindow):
         self.selected_string = {}
         self.setWindowTitle("Trosna")
         self.setGeometry(100, 100, 600, 400)
-
+        self.all_data_dict={}
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
 
@@ -46,8 +46,8 @@ class MainWindow(QMainWindow):
 
         self.add_column_button = QPushButton("Добавить участок")
         self.add_column_button.clicked.connect(self.get_a_str_from_a_list)
-        self.add_column_button.clicked.connect(self.select_params)
-        self.add_column_button.clicked.connect(self.add_column)
+        # self.add_column_button.clicked.connect(self.select_params)
+        # self.add_column_button.clicked.connect(self.add_column)
         self.layout.addWidget(self.add_column_button)
 
     def get_a_str_from_a_list(self):
@@ -82,31 +82,41 @@ class MainWindow(QMainWindow):
             "population": 0
         }
         if select_model=='третья':
-            print(777)
-            self.get_numbers_to_input(len(third_model.keys()),list(third_model.keys()))
+            self.get_numbers_to_input(len(third_model.keys()),list(third_model.keys()),select_model)
 
-    def get_numbers_to_input(self,count,model_name_list):
+    def get_numbers_to_input(self,count,model_name_list,select_model):
         if count > 0:
             dialog = QDialog(self)
             dialog.setWindowTitle("Введите числа")
             print(model_name_list)
             layout = QVBoxLayout()
-            self.inputs = []
+            inputs = []
 
             for i in range(count):
                 label = QLabel(model_name_list[i])
                 input_line = QLineEdit()
                 layout.addWidget(label)
                 layout.addWidget(input_line)
-                self.inputs.append(input_line)
-
+                inputs.append(input_line)
             button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
-            # button_box.accepted.connect(lambda: self.add_column(dialog))
-            # button_box.rejected.connect(dialog.reject)
+            button_box.accepted.connect(lambda: self.generate_float_list(dialog,inputs,select_model))
+            button_box.rejected.connect(dialog.reject)
 
             layout.addWidget(button_box)
             dialog.setLayout(layout)
             dialog.exec()
+
+    def generate_float_list(self,dialog,inputs,select_model):
+        column_count = self.table.columnCount()
+        num=[]
+        for i in inputs:
+            try:
+                num.append(float(i.text()))
+            except ValueError:
+                num.append(0.0)
+        self.all_data_dict[column_count] = num
+        print(self.all_data_dict)
+        dialog.accept()
 
     def add_column(self):
         column_count = self.table.columnCount()
