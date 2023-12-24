@@ -1,4 +1,6 @@
 from layout_colorwidget import Color
+from models_and_their_params import models_and_their_params
+from calculate_risk import calculate_risk
 from PySide6.QtWidgets import (
 QApplication,
 QMainWindow,
@@ -73,18 +75,12 @@ class MainWindow(QMainWindow):
         dialog = QDialog(self)
         dialog.setWindowTitle("Введите числа")
         layout = QVBoxLayout()
-        third_model = {
-            "Concentration": 0,
-            "SF": 0,
-            "Time": 0,
-            "weight": 0,
-            "consumption": 0,
-            "population": 0
-        }
+        new_model=models_and_their_params(model=select_model)
+        empty_dict=new_model.get_empty_model()
         if select_model=='третья':
-            self.get_numbers_to_input(len(third_model.keys()),list(third_model.keys()),select_model)
+            self.get_numbers_to_input(len(empty_dict.keys()),list(empty_dict.keys()),select_model,empty_dict)
 
-    def get_numbers_to_input(self,count,model_name_list,select_model):
+    def get_numbers_to_input(self,count,model_name_list,select_model,empty_dict):
         if count > 0:
             dialog = QDialog(self)
             dialog.setWindowTitle("Введите числа")
@@ -99,37 +95,46 @@ class MainWindow(QMainWindow):
                 layout.addWidget(input_line)
                 inputs.append(input_line)
             button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
-            button_box.accepted.connect(lambda: self.generate_float_list(dialog,inputs,select_model))
+            button_box.accepted.connect(lambda: self.generate_float_list(dialog,inputs,
+                                                                         select_model,
+                                                                         empty_dict,model_name_list))
             button_box.rejected.connect(dialog.reject)
 
             layout.addWidget(button_box)
             dialog.setLayout(layout)
             dialog.exec()
 
-    def generate_float_list(self,dialog,inputs,select_model):
+    def generate_float_list(self,dialog,inputs,select_model,empty_dict,model_name_list):
         column_count = self.table.columnCount()
         num=[]
+        print("empty_dict",empty_dict)
         for i in inputs:
             try:
                 num.append(float(i.text()))
             except ValueError:
                 num.append(0.0)
-        self.all_data_dict[column_count] = num
+        for i in range(len(num)):
+            empty_dict[model_name_list[i]]=num[i]
+        self.all_data_dict[column_count] = empty_dict
         print(self.all_data_dict)
         dialog.accept()
+        model = calculate_risk()
+        response=model.main(variant=select_model,params=empty_dict)
+        print(response)
+        self.add_column(response)
 
-    def add_column(self):
+
+    def add_column(self,response):
         column_count = self.table.columnCount()
         self.table.setColumnCount(column_count + 1)
         new_column_name = f'Участок {column_count}'
         self.table.setHorizontalHeaderItem(column_count, QTableWidgetItem(new_column_name))
 
-        print(self.selected_string)
-
-        for row in range(self.table.rowCount()):
-            self.table.setItem(row, column_count, QTableWidgetItem(""))
-
-
+        print("ffff",self.selected_string)
+        print(response)
+        for row, (key, value) in enumerate(response.items()):
+            self.table.setItem(row, column_count, QTableWidgetItem(f'{key}: {value:.4f}'))
+        self.table.resizeColumnsToContents()
 
 
 if __name__ == "__main__":
