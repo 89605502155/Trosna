@@ -77,7 +77,7 @@ class MainWindow(QMainWindow):
         layout = QVBoxLayout()
         new_model=models_and_their_params(model=select_model)
         empty_dict=new_model.get_empty_model()
-        if select_model=='третья':
+        if select_model=='третья' or select_model=='четвёртая' or select_model=='пятая':
             self.get_numbers_to_input(len(empty_dict.keys()),list(empty_dict.keys()),select_model,empty_dict)
 
     def get_numbers_to_input(self,count,model_name_list,select_model,empty_dict):
@@ -133,7 +133,13 @@ class MainWindow(QMainWindow):
         print("ffff",self.selected_string)
         print(response)
         for row, (key, value) in enumerate(response.items()):
-            self.table.setItem(row, column_count, QTableWidgetItem(f'{key}: {value:.4f}'))
+            if value > 100:
+                self.table.setItem(row, column_count, QTableWidgetItem(f'{key}: {value:,.2f}'))
+            elif value >= 0.01:
+                self.table.setItem(row, column_count, QTableWidgetItem(f'{key}: {value:,.4f}'))
+            else:
+                self.table.setItem(row, column_count, QTableWidgetItem(f'{key}: {value:,.4e}'))
+            # self.table.setItem(row, column_count, QTableWidgetItem(f'{key}: {value:,.7f}'))
         self.table.resizeColumnsToContents()
 
 

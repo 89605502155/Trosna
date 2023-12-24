@@ -16,6 +16,21 @@ class models_and_their_params:
                     "AT in years":0,
                     "population": 0
                 }
+            case "четвёртая":
+                resuolt={
+                    "Lambda пораж.фактора":0,
+                    "Зона пораж. при аварии %":0,
+                    "Время нахождения часов/неделю":0,
+                    "Количество человек в смене":0
+                }
+            case "пятая":
+                resuolt = {
+                    "Lambda пораж.фактора": 0,
+                    "Зона пораж. при аварии %": 0,
+                    "Площадь поражения, га":0,
+                    "Время нахождения недель/год": 0,
+                    "Плотность людей, чел/га": 0
+                }
         return resuolt
     def get_key_name_list(self)->list:
         key_dict = self.get_empty_model()
