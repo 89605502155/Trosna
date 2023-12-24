@@ -5,6 +5,29 @@ class models_and_their_params:
     def get_empty_model(self)->dict:
         resuolt={}
         match self.model:
+            case "вторая":
+                resuolt={
+                    "ooo":0,
+                    "ooo1": 0,
+                    "ooo2": 0,
+                    "ooo3": 0,
+                    "ooo4": 0,
+                    "ooo5": 0,
+                    "ooo55": 0,
+                    "ooo6": 0,
+                    "ooo7": 0,
+                    "ooo65": 0,
+                    "ooo54": 0,
+                    "ooo43": 0,
+                    "ooo32": 0,
+                    "ooo21": 0,
+                    "ooo222":0,
+                    "ooo333":0,
+                    "ooo444": 0,
+                    "ooo555": 0,
+                    "ooo666": 0,
+                    "ooo6666": 0
+                }
             case "третья":
                 resuolt={
                     "Concentration": 0,

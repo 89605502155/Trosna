@@ -77,11 +77,43 @@ class MainWindow(QMainWindow):
         layout = QVBoxLayout()
         new_model=models_and_their_params(model=select_model)
         empty_dict=new_model.get_empty_model()
-        if select_model=='третья' or select_model=='четвёртая' or select_model=='пятая':
+        if select_model!='первая':
             self.get_numbers_to_input(len(empty_dict.keys()),list(empty_dict.keys()),select_model,empty_dict)
 
     def get_numbers_to_input(self,count,model_name_list,select_model,empty_dict):
-        if count > 0:
+        if count > 10:
+            dialog = QDialog(self)
+            dialog.setWindowTitle("Введите числа")
+            print(model_name_list)
+            layout = QGridLayout()
+            inputs = []
+            num_columns =int(count/10)+1
+            row = 0
+            column = 0
+
+            for i in range(count):
+                label = QLabel(model_name_list[i])
+                input_line = QLineEdit()
+
+                layout.addWidget(label,row,column)
+                layout.addWidget(input_line,row,column+1)
+                inputs.append(input_line)
+                if column == num_columns * 2 - 2:
+                    column = 0
+                    row += 1
+                else:
+                    column += 2
+            button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+            layout.addWidget(button_box, row + 1, 0, 1, num_columns)
+            button_box.accepted.connect(lambda: self.generate_float_list(dialog,inputs,
+                                                                         select_model,
+                                                                         empty_dict,model_name_list))
+            button_box.rejected.connect(dialog.reject)
+
+            layout.addWidget(button_box)
+            dialog.setLayout(layout)
+            dialog.exec()
+        elif count>0:
             dialog = QDialog(self)
             dialog.setWindowTitle("Введите числа")
             print(model_name_list)
@@ -95,9 +127,9 @@ class MainWindow(QMainWindow):
                 layout.addWidget(input_line)
                 inputs.append(input_line)
             button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
-            button_box.accepted.connect(lambda: self.generate_float_list(dialog,inputs,
+            button_box.accepted.connect(lambda: self.generate_float_list(dialog, inputs,
                                                                          select_model,
-                                                                         empty_dict,model_name_list))
+                                                                         empty_dict, model_name_list))
             button_box.rejected.connect(dialog.reject)
 
             layout.addWidget(button_box)
