@@ -5,9 +5,28 @@ class calculate_risk:
 
     def calculate_second_risk(self,params:dict):
         keys=list(params.keys())
+        # ['частота аварий/год', 'концентрация канц мкг/м3', 'SF (мг/кг*сут)-1', 'воздействие дней/год EF',
+        #  'повторяемость ветра С %', 'повторяемость ветра СВ %', 'повторяемость ветра В %', 'повторяемость ветра ЮВ %',
+        #  'повторяемость ветра Ю %', 'повторяемость ветра ЮЗ %', 'повторяемость ветра З %', 'повторяемость ветра СЗ %',
+        #  'сектор негативн. воздей.', 'направление - Север-1, СВ-2, В-3,...', 'плотность населения днём',
+        #  'плотность населения ночь', 'общая полщадь поражения', 'количество воздуза в час',
+        #  'коэффициент биосохранения', 'коэффициент абсорбции', 'ED', 'weight (BW)', 'AT in years']
+
+        # print(params[keys[13]])
+        napr=(int(params[keys[13]]-1+4))%8
+        geo_napr=params[keys[4+napr]]
+        # print(keys[4+napr],geo_napr)
+        I=((params[keys[1]]*0.001*geo_napr*0.01)*params[keys[17]]*24*params[keys[3]]*
+           params[keys[20]]*params[keys[19]]*params[keys[18]])/(params[keys[21]]*params[keys[22]]*365)
+        R_I=I*params[keys[2]]*(params[keys[12]]/45)*params[keys[0]]
+        # print("I",I)
+        # print("R_I", R_I)
+        N_day=params[keys[14]]*params[keys[16]]
+        N_night=params[keys[15]]*params[keys[16]]
+        R_pop=R_I*(N_day*(2/3)+N_night*(1/3))
         return {
-            "R_ind": 0,
-            "R_pop": 100500
+            "R_ind": R_I,
+            "R_pop": R_pop
         }
     def calculate_third_risk(self,params:dict):
         keys=list(params.keys())
