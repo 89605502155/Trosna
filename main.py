@@ -77,8 +77,8 @@ class MainWindow(QMainWindow):
         layout = QVBoxLayout()
         new_model=models_and_their_params(model=select_model)
         empty_dict=new_model.get_empty_model()
-        if select_model!='первая':
-            self.get_numbers_to_input(len(empty_dict.keys()),list(empty_dict.keys()),select_model,empty_dict)
+        # if select_model!='первая':
+        self.get_numbers_to_input(len(empty_dict.keys()),list(empty_dict.keys()),select_model,empty_dict)
 
     def get_numbers_to_input(self,count,model_name_list,select_model,empty_dict):
         if count > 10:

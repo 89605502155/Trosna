@@ -1,7 +1,13 @@
 # from models_and_their_params import  models_and_their_params
+from calculate_risk_for_first_model import calculate_risk_for_first_model
 class calculate_risk:
     def __init__(self):
         pass
+
+    def calculate_first_risk(self,params:dict):
+        risk_model=calculate_risk_for_first_model()
+        resp=risk_model.main(params)
+        return resp
 
     def calculate_second_risk(self,params:dict):
         keys=list(params.keys())
@@ -81,6 +87,7 @@ class calculate_risk:
         # name_model=models_and_their_params(model=variant)
         # names=name_model.get_key_name_list()
         match variant:
+            case "первая": response=self.calculate_first_risk(params)
             case "вторая": response=self.calculate_second_risk(params)
             case "третья": response=self.calculate_third_risk(params)
             case "четвёртая": response=self.calculate_fourth_risk(params)
