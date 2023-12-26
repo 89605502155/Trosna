@@ -42,7 +42,7 @@ class MainWindow(QMainWindow):
         self.table = QTableWidget()
         self.table.setColumnCount(0)
         self.table.setRowCount(3)
-        self.table.setHorizontalHeaderLabels(['Итог'])
+        # self.table.setHorizontalHeaderLabels(['Итог'])
 
         self.layout.addWidget(self.table)
 
@@ -51,6 +51,12 @@ class MainWindow(QMainWindow):
         # self.add_column_button.clicked.connect(self.select_params)
         # self.add_column_button.clicked.connect(self.add_column)
         self.layout.addWidget(self.add_column_button)
+        # if self.table.setColumnCount()>=1:
+        self.delete_column_button = QPushButton("Удалить столбец")
+        self.delete_column_button.setVisible(False)
+        # self.delete_column_button.clicked.connect()
+        self.layout.addWidget(self.delete_column_button)
+
 
     def get_a_str_from_a_list(self):
         title = "Select a string"
@@ -142,7 +148,13 @@ class MainWindow(QMainWindow):
         print("empty_dict",empty_dict)
         for i in inputs:
             try:
-                num.append(float(i.text()))
+                s=i.text()
+                s=s.replace(",",".")
+                symbol_to_remove_1 = "_"
+                updated_string = s.replace(symbol_to_remove_1, "")
+                symbol_to_remove_2="'"
+                updated_string_2 = updated_string.replace(symbol_to_remove_2, "")
+                num.append(float(updated_string_2))
             except ValueError:
                 num.append(0.0)
         for i in range(len(num)):
@@ -173,6 +185,9 @@ class MainWindow(QMainWindow):
                 self.table.setItem(row, column_count, QTableWidgetItem(f'{key}: {value:,.4e}'))
             # self.table.setItem(row, column_count, QTableWidgetItem(f'{key}: {value:,.7f}'))
         self.table.resizeColumnsToContents()
+        column_count = self.table.columnCount()
+        if column_count >=1:
+            self.delete_column_button.setVisible(True)
 
 
 if __name__ == "__main__":
