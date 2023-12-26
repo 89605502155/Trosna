@@ -32,7 +32,7 @@ class calculate_risk:
         R_pop=R_I*(N_day*(2/3)+N_night*(1/3))
         return {
             "R_ind": R_I,
-            "R_pop": R_pop
+            "R_kol": R_pop
         }
     def calculate_third_risk(self,params:dict):
         keys=list(params.keys())
@@ -64,7 +64,7 @@ class calculate_risk:
             R_pop =0
         return {
             "R_ind": R_I,
-            "R_pop": R_pop
+            "R_kol": R_pop
         }
     def calculate_fifth_risk(self, params: dict):
         keys=list(params.keys())
@@ -78,7 +78,7 @@ class calculate_risk:
             R_pop =0
         return {
             "R_ind": R_I,
-            "R_pop": R_pop
+            "R_kol": R_pop
         }
     def main(self,variant:str,params:dict):
         response={}

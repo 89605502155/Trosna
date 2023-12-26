@@ -40,7 +40,7 @@ class MainWindow(QMainWindow):
         self.central_widget.setLayout(self.layout)
 
         self.table = QTableWidget()
-        self.table.setColumnCount(1)
+        self.table.setColumnCount(0)
         self.table.setRowCount(3)
         self.table.setHorizontalHeaderLabels(['Итог'])
 
@@ -153,13 +153,13 @@ class MainWindow(QMainWindow):
         model = calculate_risk()
         response=model.main(variant=select_model,params=empty_dict)
         print(response)
-        self.add_column(response)
+        self.add_column(response,select_model)
 
 
-    def add_column(self,response):
+    def add_column(self,response,select_model):
         column_count = self.table.columnCount()
         self.table.setColumnCount(column_count + 1)
-        new_column_name = f'Участок {column_count}'
+        new_column_name = f'Участок {column_count+1} ({select_model})'
         self.table.setHorizontalHeaderItem(column_count, QTableWidgetItem(new_column_name))
 
         print("ffff",self.selected_string)

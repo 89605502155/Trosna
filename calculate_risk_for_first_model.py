@@ -48,7 +48,7 @@ class calculate_risk_for_first_model:
             R_pop = 0
         return {
             "R_ind": R_I,
-            "R_pop": R_pop
+            "R_kol": R_pop
         }
     def main(self,param_dict)->dict:
         self.__read_json_file()
